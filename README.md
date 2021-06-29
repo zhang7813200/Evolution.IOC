@@ -78,7 +78,7 @@ DotNet standard IOC lightweight framework.
             }
             using (IContainer container = IOCContainer.Instance)
             {
-                //	3.3 提供接口，以支持自定义扩展
+                //	3.3 Provide interface to support custom extension
                 Console.WriteLine("IOC config for custom.");
                 IBaseServiceProvider serviceProvider = new DefaultXmlServiceProvider(new FileInfo(xmlPath));
                 container.Sync(serviceProvider);
