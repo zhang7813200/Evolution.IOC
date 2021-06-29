@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "xpPekhVkGJeVIP85Tus1mYZ47d8zsLhJ8ZPbM/JpESe+JsCPFtxic4dd3IBJPRxSaFlXBD0Bnu/vmJkS1a2JKQ==",
+  "success": true,
+  "projectFilePath": "C:\\DAO_Git\\ioc\\Evolution.IOC\\Evolution.IOC\\Evolution.IOC.csproj",
+  "expectedPackageFiles": [
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
