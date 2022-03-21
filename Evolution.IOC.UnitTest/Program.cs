@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Evolution.IOC.UnitTest
@@ -39,7 +41,7 @@ namespace Evolution.IOC.UnitTest
             using (IContainer container = IOCContainer.Instance)
             {
                 Console.WriteLine("Lifetime AddScoped:");
-                //	2.2 线程级别 共享实例对象 （用ThreadStatic特性控制：某一线程被反复利用，实例仍然是同一个）
+                //	2.2 线程级别 共享实例对象 （用ThreadLocal控制：某一线程被反复利用，实例仍然是同一个）
                 IRegisterInfo service = container.AddScoped<IMyService, MyService>();
                 TestMultiThread(container);
                 Console.WriteLine("\n");
@@ -150,18 +152,29 @@ namespace Evolution.IOC.UnitTest
 
         private static void TestMultiThread(IContainer container)
         {
-            int i = 0;
-            IList<Task> tasks = new List<Task>();
-            while (++i < 10)
+            ConcurrentQueue<string> queues = new ConcurrentQueue<string>();
+            ThreadPool.SetMaxThreads(6, 6);
+            var executeTimes = 20;
+
+            List<Task> tasks = new List<Task>();
+            for (var i = 0; i < executeTimes; i++)
             {
-                var task = Task.Run(() =>
-                {
+                ThreadPool.QueueUserWorkItem((state) => {
                     var service1 = container.Resolve<IMyService>();
                     service1.Run();
+                    queues.Enqueue($"finish{i}");
                 });
-                tasks.Add(task);
             }
-            Task.WaitAll(tasks.ToArray());
+
+            int finishedAction = 0;
+            while (finishedAction < executeTimes)
+            {
+                string resyult;
+                if (queues.TryDequeue(out resyult))
+                {
+                    finishedAction++;
+                }
+            }
         }
 
         private static string GetFile(string currectDirectoryPath, string fileName)

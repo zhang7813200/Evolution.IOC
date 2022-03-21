@@ -598,7 +598,7 @@ namespace Evolution.IOC
             IEnumerable<IRegisterInfo> services= serviceProvider.GetServices();
             foreach (var service in services)
             {
-                _container.GetOrAdd(service.InterfaceType.FullName, service);
+                _container.GetOrAdd(GetKey(service.InterfaceType.FullName), service);
             }
         }
 
